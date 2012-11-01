@@ -29,6 +29,9 @@ class Persona(models.Model):
     blog = models.URLField()
     twitter = models.CharField(max_length=20)
 
+    def __unicode__(self):
+        return "%s %s" % (self.name, self.lastname)
+
 
 class Event(models.Model):
     EVENT_STATUS = (
@@ -50,6 +53,9 @@ class Event(models.Model):
     url = models.URLField()
     status = models.IntegerField(max_length=1, choices=EVENT_STATUS)
 
+    def __unicode__(self):
+        return "%s in %s" % (self.name, self.city)
+
 
 class Sponsorship(models.Model):
     SPONSORSHIP_STATUS = (
@@ -65,11 +71,11 @@ class Sponsorship(models.Model):
     arrival = models.DateField()
     departure = models.DateField()
 
-    requested = models.DecimalField(max_digits=8, decimal_places=2,
+    requested = models.DecimalField(default=0, max_digits=8, decimal_places=2,
                                     verbose_name="Requested amount")
-    approved = models.DecimalField(max_digits=8, decimal_places=2,
+    approved = models.DecimalField(default=0, max_digits=8, decimal_places=2,
                                    verbose_name="Approved amount")
-    reimbursed = models.DecimalField(max_digits=8, decimal_places=2,
+    reimbursed = models.DecimalField(default=0, max_digits=8, decimal_places=2,
                                      verbose_name="Reimbursed amount")
     status = models.IntegerField(max_length=1, choices=SPONSORSHIP_STATUS)
 
@@ -81,3 +87,5 @@ class Sponsorship(models.Model):
     reports = models.URLField(verbose_name="Link to blog posts, photos you took")
     receipt = models.FileField(upload_to="receipts/%Y/%m/", verbose_name="Receipts of your approved expenses")
 
+    def __unicode__(self):
+        return "[%s] %s" % (self.event, self.persona)
